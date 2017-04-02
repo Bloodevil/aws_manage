@@ -15,7 +15,7 @@ def get_all_instances(ec2, region):
                 net = net[0]
                 private_ip = net.get('PrivateIpAddress', '')
                 public_ip = net.get('Association', {}).get('PublicIp', 'no public ip')
-                pemfile = instance['KeyName'] + '.pem'
+                pemfile = instance['KeyName']
                 instances.append({'name': '_'.join([region, name]),
                     'private_ip': private_ip,
                     'public_ip': public_ip,
@@ -66,6 +66,7 @@ def loadbalancer_instances(name='loadbalancer_name', region='us-east-1'):
 
     return result
 
+# instance = { 'pemfile' : filepath, 'public_ip': public_ip}
 def remote_ssh_command(instance, command, user='centos'):
     command = 'ssh -i ~/.ssh/%s -t %s@%s \'%s\''%(instance['pemfile'],
             user,
